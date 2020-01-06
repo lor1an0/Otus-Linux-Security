@@ -7,12 +7,12 @@ Vagrant.configure("2") do |config|
     centos.vm.box = "centos/7"
 	
     centos.vm.provider "virtualbox" do |v|
-	  v.name = "CentOS 7"
-	  v.memory = 2048
+      v.name = "CentOS 7"
+      v.memory = 2048
       v.cpus = 2
     end
 	
-	centos.vm.network "private_network", ip: "192.168.0.2",
+    centos.vm.network "private_network", ip: "192.168.0.2",
       virtualbox__intnet: "mynetwork"
   end
   
@@ -20,12 +20,12 @@ Vagrant.configure("2") do |config|
     kali.vm.box = "kalilinux/rolling"
 	
     kali.vm.provider "virtualbox" do |v|
-	  v.name = "Kali Linux"
-	  v.memory = 2048
+      v.name = "Kali Linux"
+      v.memory = 2048
       v.cpus = 2
     end
 	
-	kali.vm.network "private_network", ip: "192.168.0.1",
+    kali.vm.network "private_network", ip: "192.168.0.1",
       virtualbox__intnet: "mynetwork"
   end
   
