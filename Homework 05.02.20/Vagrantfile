@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
- config.vm.define "centos_test" do |subconfig|    
+ config.vm.define "centos" do |subconfig|    
   subconfig.vm.box = "centos/7"
   subconfig.vm.hostname="centos"    
   subconfig.vm.network :private_network, ip: "192.168.55.11"    
@@ -8,20 +8,20 @@ Vagrant.configure("2") do |config|
     vb.cpus = "1"    
     unless File.exist?('./sata1.vdi')
 		vb.customize ['createhd', '--filename', './sata1.vdi', '--size', 500 * 1024]
+		vb.customize ["storagectl", :id, "--name", "SATA", "--add", "sata" ]
+		vb.customize ['storageattach', :id, '--storagectl', 'SATA', '--port', 1, '--device', 0, '--type', 'hdd', '--medium',  './sata1.vdi']
     end  
-	vb.customize ["storagectl", :id, "--name", "SATA", "--add", "sata" ]
-	vb.customize ['storageattach', :id, '--storagectl', 'SATA', '--port', 1, '--device', 0, '--type', 'hdd', '--medium',  './sata1.vdi']
- 
 
   end
+  subconfig.vm.synced_folder ".", "/vagrant"
   subconfig.vm.provision "shell", inline: <<-SHELL
               useradd otus
               useradd otus2
               useradd otus3
               cp -r /home/vagrant/.ssh /home/otus/.ssh
-              chown otus:otus -R /home/otus/.ssh 
+              chown otus:otus -R /home/otus/.ssh
           SHELL
-		  
+
   subconfig.vm.provision "shell", path: "task.sh"
  end
 
@@ -47,5 +47,4 @@ Vagrant.configure("2") do |config|
 # end
 
 end
-
 
